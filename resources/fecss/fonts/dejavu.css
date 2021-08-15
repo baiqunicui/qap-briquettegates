@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'DejaVu Serif';
+    font-style: normal;
+    font-weight: 400;
+    src: local('DejaVu Serif'), local('DejaVuSerif-Book'),
+        url('/fonts/dejavu/_.woff') format('woff'),
+        url('/fonts/dejavu/_.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Serif';
+    font-style: bold;
+    font-weight: 700;
+    src: local('DejaVu Serif'), local('DejaVuSerif-Book'),
+        url('/fonts/dejavu/bold.ttf') format('truetype');
+}

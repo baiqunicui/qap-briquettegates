@@ -1,0 +1,21 @@
+/* #slider-center.swiper-slide {
+    height: 40vh !important;
+}
+
+#slider-center.swiper-slide-active {
+    height: 55vh !important;
+} */
+
+.swiper-button-next,
+.swiper-button-prev {
+    @apply p-4 bg-center bg-no-repeat !w-auto !h-auto;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    display: none;
+}
+
+.swiper-pagination-bullet-active {
+    @apply !bg-secondary;
+}

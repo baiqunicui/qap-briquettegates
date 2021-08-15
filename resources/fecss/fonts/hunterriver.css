@@ -1,0 +1,7 @@
+@font-face {
+    font-family: "Hunter River";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Hunter River"),
+        url("/fonts/hunterriver/_.ttf") format("truetype");
+}

@@ -1,0 +1,11 @@
+.title-left {
+    @apply space-y-4 text-left;
+}
+
+.title-center {
+    @apply space-y-4 text-left md:text-center;
+}
+
+[class*="title-"] small {
+    @apply inline-flex px-4 py-2 capitalize rounded-full shadow-2xl bg-[#eeeeee];
+}

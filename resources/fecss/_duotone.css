@@ -1,0 +1,11 @@
+.duotone {
+    @apply relative flex overflow-hidden;
+}
+
+.duotone::before {
+    @apply content-[''] absolute inset-0 z-10 w-full h-full mix-blend-darken;
+}
+
+.duotone::after {
+    @apply content-[''] absolute inset-0 z-10 w-full h-full mix-blend-lighten;
+}

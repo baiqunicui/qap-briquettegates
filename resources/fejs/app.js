@@ -1,0 +1,13 @@
+require("./alpine.min.js");
+require("./alpine-clipboard.umd");
+// require('./splide.js');
+// window.ImageTool = require("@editorjs/image");
+// window.List = require("@editorjs/list");
+// window.Header = require("@editorjs/header");
+// window.Warning = require("@editorjs/warning");
+// window.InlineCode = require("@editorjs/inline-code");
+// window.Underline = require("@editorjs/underline");
+// window.Maker = require("@editorjs/marker");
+// window.RawTool = require("@editorjs/raw");
+// window.Delimiter = require("@editorjs/delimiter");
+// window.CodeTool = require("@editorjs/code");

@@ -1,0 +1,56 @@
+/* ./resources/css/app.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+@import "./fonts/inter.css";
+@import "./fonts/hunterriver.css";
+@import "./_section.css";
+@import "./_image.css";
+@import "./_duotone.css";
+@import "./_svg.css";
+@import "./_input.css";
+@import "./_slider.css";
+@import "./_swiper-bundle.min.css";
+@import "./_font.css";
+@import "./_animation.css";
+
+@layer base {
+    h1 {
+        font-size: calc(48px + (128 - 48) * ((100vw - 300px) / (1600 - 300)));
+        @apply font-semibold leading-[0.85] tracking-tighter;
+    }
+
+    h2 {
+        font-size: calc(44px + (84 - 44) * ((100vw - 300px) / (1600 - 300)));
+        @apply font-semibold leading-[0.85] tracking-tighter;
+    }
+
+    h3 {
+        font-size: calc(32px + (56 - 32) * ((100vw - 300px) / (1600 - 300)));
+        @apply leading-tight;
+    }
+
+    h4 {
+        font-size: calc(24px + (40 - 24) * ((100vw - 300px) / (1600 - 300)));
+        @apply font-semibold leading-tight;
+    }
+
+    h5 {
+        font-size: calc(20px + (28 - 20) * ((100vw - 300px) / (1600 - 300)));
+    }
+
+    h6 {
+        font-size: calc(16px + (20 - 15) * ((100vw - 300px) / (1600 - 300)));
+    }
+
+    p {
+        font-size: calc(13px + (17 - 13) * ((100vw - 300px) / (1600 - 300)));
+        @apply font-normal;
+    }
+
+    small {
+        font-size: calc(10px + (11 - 10) * ((100vw - 300px) / (1600 - 300)));
+    }
+}

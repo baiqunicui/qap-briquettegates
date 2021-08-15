@@ -1,5 +1,6 @@
-const mix = require('laravel-mix');
-
+const mix = require("laravel-mix");
+const tailwindcss = require("tailwindcss");
+mix.disableSuccessNotifications();
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,7 +12,14 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        require("tailwindcss")
-    ]);
+mix.js("resources/js/app.js", "public/js").postCss(
+    "resources/css/app.css",
+    "public/css",
+    [tailwindcss("./tailwind.config.js")]
+);
+
+mix.js("resources/fejs/app.js", "public/fejs/app.js").postCss(
+    "resources/fecss/app.css",
+    "public/fecss/app.css",
+    [tailwindcss("./tailwindfe.config.js")]
+);

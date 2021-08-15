@@ -1,0 +1,1 @@
+<div {{ $attributes->merge(['class' => 'border border-gray-800'])->only('class') }}></div>
