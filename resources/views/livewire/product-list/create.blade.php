@@ -1,13 +1,13 @@
 <form wire:submit.prevent="submit" class="pt-3">
 
-    <div class="form-group {{ $errors->has('productList.urutan') ? 'invalid' : '' }}">
-        <label class="form-label required" for="urutan">{{ trans('cruds.productList.fields.urutan') }}</label>
-        <input class="form-control" type="text" name="urutan" id="urutan" required wire:model.defer="productList.urutan">
+    <div class="form-group {{ $errors->has('productList.slug') ? 'invalid' : '' }}">
+        <label class="form-label" for="slug">{{ trans('cruds.productList.fields.slug') }}</label>
+        <input class="form-control" type="text" name="slug" id="slug" wire:model.defer="productList.slug">
         <div class="validation-message">
-            {{ $errors->first('productList.urutan') }}
+            {{ $errors->first('productList.slug') }}
         </div>
         <div class="help-block">
-            {{ trans('cruds.productList.fields.urutan_helper') }}
+            {{ trans('cruds.productList.fields.slug_helper') }}
         </div>
     </div>
     <div class="form-group {{ $errors->has('mediaCollections.product_list_image') ? 'invalid' : '' }}">
@@ -78,6 +78,46 @@
         </div>
         <div class="help-block">
             {{ trans('cruds.productList.fields.meta_helper') }}
+        </div>
+    </div>
+    <div class="form-group {{ $errors->has('mediaCollections.product_list_imageproduct') ? 'invalid' : '' }}">
+        <label class="form-label" for="imageproduct">{{ trans('cruds.productList.fields.imageproduct') }}</label>
+        <x-dropzone id="imageproduct" name="imageproduct" action="{{ route('admin.product-lists.storeMedia') }}" collection-name="product_list_imageproduct" max-file-size="2" max-width="4096" max-height="4096" />
+        <div class="validation-message">
+            {{ $errors->first('mediaCollections.product_list_imageproduct') }}
+        </div>
+        <div class="help-block">
+            {{ trans('cruds.productList.fields.imageproduct_helper') }}
+        </div>
+    </div>
+    <div class="form-group {{ $errors->has('productList.s_2_heading') ? 'invalid' : '' }}">
+        <label class="form-label" for="s_2_heading">{{ trans('cruds.productList.fields.s_2_heading') }}</label>
+        <textarea class="form-control" name="s_2_heading" id="s_2_heading" wire:model.defer="productList.s_2_heading" rows="4"></textarea>
+        <div class="validation-message">
+            {{ $errors->first('productList.s_2_heading') }}
+        </div>
+        <div class="help-block">
+            {{ trans('cruds.productList.fields.s_2_heading_helper') }}
+        </div>
+    </div>
+    <div class="form-group {{ $errors->has('productList.s_2_desc') ? 'invalid' : '' }}">
+        <label class="form-label" for="s_2_desc">{{ trans('cruds.productList.fields.s_2_desc') }}</label>
+        <textarea class="form-control" name="s_2_desc" id="s_2_desc" wire:model.defer="productList.s_2_desc" rows="4"></textarea>
+        <div class="validation-message">
+            {{ $errors->first('productList.s_2_desc') }}
+        </div>
+        <div class="help-block">
+            {{ trans('cruds.productList.fields.s_2_desc_helper') }}
+        </div>
+    </div>
+    <div class="form-group {{ $errors->has('productList.s_2_meta') ? 'invalid' : '' }}">
+        <label class="form-label" for="s_2_meta">{{ trans('cruds.productList.fields.s_2_meta') }}</label>
+        <textarea class="form-control" name="s_2_meta" id="s_2_meta" wire:model.defer="productList.s_2_meta" rows="4"></textarea>
+        <div class="validation-message">
+            {{ $errors->first('productList.s_2_meta') }}
+        </div>
+        <div class="help-block">
+            {{ trans('cruds.productList.fields.s_2_meta_helper') }}
         </div>
     </div>
 

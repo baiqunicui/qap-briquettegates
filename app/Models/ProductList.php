@@ -22,20 +22,21 @@ class ProductList extends Model implements HasMedia
 
     public $orderable = [
         'id',
-        'urutan',
+        'slug',
         'style.title',
         'heading',
     ];
 
     public $filterable = [
         'id',
-        'urutan',
+        'slug',
         'style.title',
         'heading',
     ];
 
     protected $appends = [
         'image',
+        'imageproduct',
     ];
 
     protected $dates = [
@@ -45,13 +46,16 @@ class ProductList extends Model implements HasMedia
     ];
 
     protected $fillable = [
-        'urutan',
+        'slug',
         'style_id',
         'heading',
         'subheading',
         'desc',
         'color',
         'meta',
+        's_2_heading',
+        's_2_desc',
+        's_2_meta',
     ];
 
     public function registerMediaConversions(Media $media = null): void
@@ -87,6 +91,18 @@ class ProductList extends Model implements HasMedia
     public function style()
     {
         return $this->belongsTo(Style::class);
+    }
+
+    public function getImageproductAttribute()
+    {
+        return $this->getMedia('product_list_imageproduct')->map(function ($item) {
+            $media = $item->toArray();
+            $media['url'] = $item->getUrl();
+            $media['thumbnail'] = $item->getUrl('thumbnail');
+            $media['preview_thumbnail'] = $item->getUrl('preview_thumbnail');
+
+            return $media;
+        });
     }
 
     protected function serializeDate(DateTimeInterface $date)

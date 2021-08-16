@@ -23,6 +23,8 @@ class Edit extends Component
         $this->initListsForFields();
         $this->mediaCollections = [
             'product_list_image' => $productList->image,
+
+            'product_list_imageproduct' => $productList->imageproduct,
         ];
     }
 
@@ -63,10 +65,9 @@ class Edit extends Component
     protected function rules(): array
     {
         return [
-            'productList.urutan' => [
+            'productList.slug' => [
                 'string',
-                'required',
-                'unique:product_lists,urutan,' . $this->productList->id,
+                'nullable',
             ],
             'mediaCollections.product_list_image' => [
                 'array',
@@ -98,6 +99,26 @@ class Edit extends Component
                 'nullable',
             ],
             'productList.meta' => [
+                'string',
+                'nullable',
+            ],
+            'mediaCollections.product_list_imageproduct' => [
+                'array',
+                'nullable',
+            ],
+            'mediaCollections.product_list_imageproduct.*.id' => [
+                'integer',
+                'exists:media,id',
+            ],
+            'productList.s_2_heading' => [
+                'string',
+                'nullable',
+            ],
+            'productList.s_2_desc' => [
+                'string',
+                'nullable',
+            ],
+            'productList.s_2_meta' => [
                 'string',
                 'nullable',
             ],
