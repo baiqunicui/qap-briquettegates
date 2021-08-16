@@ -1,3 +1,3 @@
 .form-class {
-    @apply w-full !bg-transparent !border !border-primary !border-opacity-10 focus:!ring-0 outline-none px-3 focus:!placeholder-white placeholder-shown:text-xs !text-xs placeholder-primary/30;
+    @apply w-full !bg-transparent !border !border-primary !border-opacity-20 focus:!ring-0 outline-none px-3 focus:!placeholder-white placeholder-shown:text-sm !text-sm placeholder-primary/30;
 }
