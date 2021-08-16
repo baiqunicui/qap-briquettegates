@@ -55,10 +55,9 @@ class Create extends Component
     protected function rules(): array
     {
         return [
-            'productList.urutan' => [
+            'productList.slug' => [
                 'string',
-                'required',
-                'unique:product_lists,urutan',
+                'nullable',
             ],
             'mediaCollections.product_list_image' => [
                 'array',
@@ -90,6 +89,26 @@ class Create extends Component
                 'nullable',
             ],
             'productList.meta' => [
+                'string',
+                'nullable',
+            ],
+            'mediaCollections.product_list_imageproduct' => [
+                'array',
+                'nullable',
+            ],
+            'mediaCollections.product_list_imageproduct.*.id' => [
+                'integer',
+                'exists:media,id',
+            ],
+            'productList.s_2_heading' => [
+                'string',
+                'nullable',
+            ],
+            'productList.s_2_desc' => [
+                'string',
+                'nullable',
+            ],
+            'productList.s_2_meta' => [
                 'string',
                 'nullable',
             ],

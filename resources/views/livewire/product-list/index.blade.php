@@ -45,8 +45,8 @@
                             @include('components.table.sort', ['field' => 'id'])
                         </th>
                         <th>
-                            {{ trans('cruds.productList.fields.urutan') }}
-                            @include('components.table.sort', ['field' => 'urutan'])
+                            {{ trans('cruds.productList.fields.slug') }}
+                            @include('components.table.sort', ['field' => 'slug'])
                         </th>
                         <th>
                             {{ trans('cruds.productList.fields.image') }}
@@ -73,7 +73,7 @@
                                 {{ $productList->id }}
                             </td>
                             <td>
-                                {{ $productList->urutan }}
+                                {{ $productList->slug }}
                             </td>
                             <td>
                                 @foreach($productList->image as $key => $entry)

@@ -27,10 +27,10 @@
                         </tr>
                         <tr>
                             <th>
-                                {{ trans('cruds.productList.fields.urutan') }}
+                                {{ trans('cruds.productList.fields.slug') }}
                             </th>
                             <td>
-                                {{ $productList->urutan }}
+                                {{ $productList->slug }}
                             </td>
                         </tr>
                         <tr>
@@ -85,6 +85,34 @@
                             </th>
                             <td>
                                 {{ $productList->color }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ trans('cruds.productList.fields.imageproduct') }}
+                            </th>
+                            <td>
+                                @foreach($productList->imageproduct as $key => $entry)
+                                    <a class="link-photo" href="{{ $entry['url'] }}">
+                                        <img src="{{ $entry['preview_thumbnail'] }}" alt="{{ $entry['name'] }}" title="{{ $entry['name'] }}">
+                                    </a>
+                                @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ trans('cruds.productList.fields.s_2_heading') }}
+                            </th>
+                            <td>
+                                {{ $productList->s_2_heading }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {{ trans('cruds.productList.fields.s_2_desc') }}
+                            </th>
+                            <td>
+                                {{ $productList->s_2_desc }}
                             </td>
                         </tr>
                     </tbody>
