@@ -67,7 +67,8 @@ class Edit extends Component
         return [
             'productList.slug' => [
                 'string',
-                'nullable',
+                'required',
+                'unique:product_lists,slug,' . $this->productList->id,
             ],
             'mediaCollections.product_list_image' => [
                 'array',
