@@ -1,4 +1,6 @@
 const defaultTheme = require("tailwindcss");
+const colors = require('tailwindcss/colors')
+
 
 module.exports = {
     mode: "jit",
@@ -24,6 +26,7 @@ module.exports = {
                 secondary: {
                     DEFAULT: "#EA2550",
                 },
+                gray: colors.warmGray,
             },
             boxShadow: {
                 1: "7px 7px rgba(0, 0, 0, 0.1)",

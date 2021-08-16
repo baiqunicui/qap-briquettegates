@@ -7,12 +7,14 @@
     @apply space-y-10 md:space-y-16 lg:space-y-24;
 } */
 
-.main section {
-    @apply space-y-10 md:space-y-8;
+.section {
+    @apply container z-10 flex;
+    padding-left: calc(20px + (80 - 20) * ((100vw - 300px) / (1600 - 300)));
+    padding-right: calc(20px + (80 - 20) * ((100vw - 300px) / (1600 - 300)));
 }
 
-section {
-    @apply container flex flex-col justify-center w-10/12 py-16 mx-auto md:w-10/12 lg:w-8/12 md:py-16 lg:py-20;
+.section-full {
+    @apply relative z-0 flex flex-col items-center justify-between min-h-screen mx-auto;
 }
 
 .full {

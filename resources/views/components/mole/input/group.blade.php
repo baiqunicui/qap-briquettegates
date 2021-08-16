@@ -3,7 +3,7 @@
 <div class="w-full">
     @isset($label)
     <div class="flex ml-2">
-        <span class="bg-white z-50 px-1 text-[9px] font-medium capitalize">
+        <span class="bg-gray-100 z-50 px-1 text-[9px] font-medium capitalize">
             {{ $label}}
         </span>
     </div>
