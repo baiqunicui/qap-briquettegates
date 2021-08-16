@@ -1,8 +1,8 @@
 <form wire:submit.prevent="submit" class="pt-3">
 
     <div class="form-group {{ $errors->has('productList.slug') ? 'invalid' : '' }}">
-        <label class="form-label" for="slug">{{ trans('cruds.productList.fields.slug') }}</label>
-        <input class="form-control" type="text" name="slug" id="slug" wire:model.defer="productList.slug">
+        <label class="form-label required" for="slug">{{ trans('cruds.productList.fields.slug') }}</label>
+        <input class="form-control" type="text" name="slug" id="slug" required wire:model.defer="productList.slug">
         <div class="validation-message">
             {{ $errors->first('productList.slug') }}
         </div>

@@ -10,7 +10,7 @@ class CreateProductListsTable extends Migration
     {
         Schema::create('product_lists', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('slug')->nullable();
+            $table->string('slug')->unique();
             $table->longText('heading')->nullable();
             $table->longText('subheading')->nullable();
             $table->longText('desc')->nullable();

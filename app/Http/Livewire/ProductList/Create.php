@@ -57,7 +57,8 @@ class Create extends Component
         return [
             'productList.slug' => [
                 'string',
-                'nullable',
+                'required',
+                'unique:product_lists,slug',
             ],
             'mediaCollections.product_list_image' => [
                 'array',
