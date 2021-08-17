@@ -58,6 +58,16 @@ class ProductList extends Model implements HasMedia
         's_2_meta',
     ];
 
+    protected $casts = [
+        'heading' => 'array',
+        'subheading' => 'array',
+        'desc' => 'array',
+        'meta' => 'array',
+        's_2_heading' => 'array',
+        's_2_desc' => 'array',
+        's_2_meta' => 'array',
+    ];
+
     public function registerMediaConversions(Media $media = null): void
     {
         $thumbnailWidth  = 50;

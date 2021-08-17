@@ -2,12 +2,14 @@
 
 namespace App\Http\Livewire\About;
 
+use App\Models\About;
 use Livewire\Component;
 
 class FeIndex extends Component
 {
     public function render()
     {
-        return view('livewire.about.fe-index')->layout('layouts.html');
+        $collection = About::get()->sortBy('urutan');
+        return view('livewire.about.fe-index', compact('collection'))->layout('layouts.html');
     }
 }

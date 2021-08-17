@@ -4,23 +4,70 @@ namespace App\Http\Livewire\About;
 
 use App\Models\About;
 use App\Models\Style;
-use Livewire\Component;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Traits\WithUploadsMedia;
+use App\Traits\WithValidation;
 
-class Create extends Component
+use App\View\Components\Form\Arrayable;
+use App\View\Components\Form\Color;
+use App\View\Components\Form\Input;
+use App\View\Components\Form\InputArray;
+use App\View\Components\Form\Textarea;
+use App\View\Components\Form\FormComponent;
+
+class Create extends FormComponent
 {
+    use WithValidation, WithUploadsMedia;
+
     public About $about;
-
-    public array $mediaToRemove = [];
-
-    public array $listsForFields = [];
-
-    public array $mediaCollections = [];
 
     public function mount(About $about)
     {
         $this->about = $about;
+        $this->data = $about->toArray();
+
         $this->initListsForFields();
+    }
+
+    public function fields()
+    {
+        return [
+            Arrayable::make('about.subheading', 'subheading')->fields([
+                Textarea::make('en', 'en'),
+                Textarea::make('id', 'id'),
+            ]),
+            Arrayable::make('about.heading', 'heading')->fields([
+                Textarea::make('en', 'en'),
+                Textarea::make('id', 'id'),
+            ]),
+            Arrayable::make('about.desc', 'desc')->fields([
+                Textarea::make('en', 'en'),
+                Textarea::make('id', 'id'),
+            ]),
+            Color::make('about.color', 'color'),
+            Arrayable::make('about.meta', 'meta')->fields([
+                InputArray::make('en', 'en')->fields([
+                    Input::make('heading', 'heading'),
+                    Textarea::make('desc', 'desc'),
+                    Input::make('subheading', 'subheading'),
+                    Input::make('link', 'link'),
+                ]),
+                InputArray::make('id', 'id')->fields([
+                    Input::make('heading', 'heading'),
+                    Textarea::make('desc', 'desc'),
+                    Input::make('subheading', 'subheading'),
+                    Input::make('link', 'link'),
+                ]),
+            ]),
+        ];
+    }
+
+    public function updated()
+    {
+        $this->about->heading        = $this->data('about.heading');
+        $this->about->subheading     = $this->data('about.subheading');
+        $this->about->desc           = $this->data('about.desc');
+        $this->about->color          = $this->data('about.color');
+        $this->about->meta           = $this->data('about.meta');
     }
 
     public function render()
@@ -33,23 +80,9 @@ class Create extends Component
         $this->validate();
 
         $this->about->save();
-        $this->syncMedia();
+        $this->syncMedia($this->about->id);
 
         return redirect()->route('admin.abouts.index');
-    }
-
-    public function addMedia($media): void
-    {
-        $this->mediaCollections[$media['collection_name']][] = $media;
-    }
-
-    public function removeMedia($media): void
-    {
-        $collection = collect($this->mediaCollections[$media['collection_name']]);
-
-        $this->mediaCollections[$media['collection_name']] = $collection->reject(fn ($item) => $item['uuid'] === $media['uuid'])->toArray();
-
-        $this->mediaToRemove[] = $media['uuid'];
     }
 
     protected function rules(): array
@@ -73,24 +106,19 @@ class Create extends Component
                 'exists:styles,id',
                 'nullable',
             ],
-            'about.heading' => [
-                'string',
+            'about.heading.*.*' => [
                 'nullable',
             ],
-            'about.subheading' => [
-                'string',
+            'about.subheading.*.*' => [
                 'nullable',
             ],
-            'about.desc' => [
-                'string',
+            'about.desc.*.*' => [
                 'nullable',
             ],
             'about.color' => [
-                'string',
                 'nullable',
             ],
-            'about.meta' => [
-                'string',
+            'about.meta.*.*' => [
                 'nullable',
             ],
         ];
@@ -99,14 +127,5 @@ class Create extends Component
     protected function initListsForFields(): void
     {
         $this->listsForFields['style'] = Style::pluck('title', 'id')->toArray();
-    }
-
-    protected function syncMedia(): void
-    {
-        collect($this->mediaCollections)->flatten(1)
-            ->each(fn ($item) => Media::where('uuid', $item['uuid'])
-            ->update(['model_id' => $this->about->id]));
-
-        Media::whereIn('uuid', $this->mediaToRemove)->delete();
     }
 }

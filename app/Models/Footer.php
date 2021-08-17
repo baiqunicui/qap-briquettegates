@@ -54,6 +54,13 @@ class Footer extends Model implements HasMedia
         'meta',
     ];
 
+    protected $casts = [
+        'heading' => 'array',
+        'subheading' => 'array',
+        'desc' => 'array',
+        'meta' => 'array',
+    ];
+
     public function registerMediaConversions(Media $media = null): void
     {
         $thumbnailWidth  = 50;

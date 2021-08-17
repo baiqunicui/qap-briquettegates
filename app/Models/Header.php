@@ -38,6 +38,12 @@ class Header extends Model implements HasMedia
         'button',
     ];
 
+    protected $casts = [
+        'menu' => 'array',
+        'lang' => 'array',
+        'button' => 'array',
+    ];
+
     protected $dates = [
         'created_at',
         'updated_at',

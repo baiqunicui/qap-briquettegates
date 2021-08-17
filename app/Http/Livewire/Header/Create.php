@@ -3,20 +3,65 @@
 namespace App\Http\Livewire\Header;
 
 use App\Models\Header;
-use Livewire\Component;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Traits\WithUploadsMedia;
+use App\Traits\WithValidation;
 
-class Create extends Component
+use App\View\Components\Form\Arrayable;
+use App\View\Components\Form\Color;
+use App\View\Components\Form\Input;
+use App\View\Components\Form\InputArray;
+use App\View\Components\Form\Textarea;
+use App\View\Components\Form\FormComponent;
+
+class Create extends FormComponent
 {
+    use WithValidation, WithUploadsMedia;
+
     public Header $header;
-
-    public array $mediaToRemove = [];
-
-    public array $mediaCollections = [];
 
     public function mount(Header $header)
     {
         $this->header = $header;
+        $this->data = $header->toArray();
+    }
+
+    public function fields()
+    {
+        return [
+            Arrayable::make('header.menu', 'menu')->fields([
+                InputArray::make('en', 'en')->fields([
+                    Input::make('heading', 'heading'),
+                    Input::make('link', 'link'),
+                ]),
+                InputArray::make('id', 'id')->fields([
+                    Input::make('heading', 'heading'),
+                    Input::make('link', 'link'),
+                ]),
+            ]),
+            Arrayable::make('header.lang', 'lang')->fields([
+                InputArray::make('en', 'en')->fields([
+                    Input::make('heading', 'heading'),
+                    Input::make('link', 'link'),
+                ]),
+                InputArray::make('id', 'id')->fields([
+                    Input::make('heading', 'heading'),
+                    Input::make('link', 'link'),
+                ]),
+            ]),
+            Arrayable::make('header.button', 'button')->fields([
+                Input::make('en', 'en'),
+                Input::make('id', 'id'),
+                Color::make('color', 'color'),
+                Input::make('link', 'link'),
+            ]),
+        ];
+    }
+
+    public function updated()
+    {
+        $this->header->menu     = $this->data('header.menu');
+        $this->header->lang     = $this->data('header.lang');
+        $this->header->button   = $this->data('header.button');
     }
 
     public function render()
@@ -29,23 +74,9 @@ class Create extends Component
         $this->validate();
 
         $this->header->save();
-        $this->syncMedia();
+        $this->syncMedia($this->header->id);
 
         return redirect()->route('admin.headers.index');
-    }
-
-    public function addMedia($media): void
-    {
-        $this->mediaCollections[$media['collection_name']][] = $media;
-    }
-
-    public function removeMedia($media): void
-    {
-        $collection = collect($this->mediaCollections[$media['collection_name']]);
-
-        $this->mediaCollections[$media['collection_name']] = $collection->reject(fn ($item) => $item['uuid'] === $media['uuid'])->toArray();
-
-        $this->mediaToRemove[] = $media['uuid'];
     }
 
     protected function rules(): array
@@ -59,27 +90,16 @@ class Create extends Component
                 'integer',
                 'exists:media,id',
             ],
-            'header.menu' => [
-                'string',
+
+            'header.menu.*.*' => [
                 'nullable',
             ],
-            'header.lang' => [
-                'string',
+            'header.lang.*.*' => [
                 'nullable',
             ],
-            'header.button' => [
-                'string',
+            'header.button.*.*' => [
                 'nullable',
             ],
         ];
-    }
-
-    protected function syncMedia(): void
-    {
-        collect($this->mediaCollections)->flatten(1)
-            ->each(fn ($item) => Media::where('uuid', $item['uuid'])
-            ->update(['model_id' => $this->header->id]));
-
-        Media::whereIn('uuid', $this->mediaToRemove)->delete();
     }
 }

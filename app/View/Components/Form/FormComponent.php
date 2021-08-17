@@ -14,6 +14,7 @@ class FormComponent extends Component
     public $title;
     public $layout;
     public $data = [];
+    public array $listsForFields = [];
 
     public function data($key, $default = null)
     {

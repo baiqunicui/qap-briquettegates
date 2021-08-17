@@ -12,6 +12,10 @@ return [
             'title'      => 'Bahasa / Indonesia',
             'short_code' => 'id',
         ],
+        [
+            'title'      => 'English',
+            'short_code' => 'en',
+        ],
     ],
     'pagination' => [
         'options' => [

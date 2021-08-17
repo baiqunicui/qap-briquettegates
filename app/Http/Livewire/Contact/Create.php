@@ -4,23 +4,68 @@ namespace App\Http\Livewire\Contact;
 
 use App\Models\Contact;
 use App\Models\Style;
-use Livewire\Component;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Traits\WithUploadsMedia;
+use App\Traits\WithValidation;
 
-class Create extends Component
+use App\View\Components\Form\Arrayable;
+use App\View\Components\Form\Color;
+use App\View\Components\Form\Input;
+use App\View\Components\Form\InputArray;
+use App\View\Components\Form\Textarea;
+use App\View\Components\Form\FormComponent;
+
+class Create extends FormComponent
 {
+    use WithValidation, WithUploadsMedia;
+
     public Contact $contact;
-
-    public array $mediaToRemove = [];
-
-    public array $listsForFields = [];
-
-    public array $mediaCollections = [];
 
     public function mount(Contact $contact)
     {
         $this->contact = $contact;
+        $this->data = $contact->toArray();
+
         $this->initListsForFields();
+    }
+
+    public function fields()
+    {
+        return [
+            Arrayable::make('product.subheading', 'subheading')->fields([
+                Textarea::make('en', 'en'),
+                Textarea::make('id', 'id'),
+            ]),
+            Arrayable::make('product.heading', 'heading')->fields([
+                Textarea::make('en', 'en'),
+                Textarea::make('id', 'id'),
+            ]),
+            Arrayable::make('product.desc', 'desc')->fields([
+                Textarea::make('en', 'en'),
+                Textarea::make('id', 'id'),
+            ]),
+            Color::make('product.color', 'color'),
+            Arrayable::make('product.meta', 'meta')->fields([
+                InputArray::make('en', 'en')->fields([
+                    Input::make('heading', 'heading'),
+                    Input::make('subheading', 'subheading'),
+                    Input::make('link', 'link'),
+                ]),
+                InputArray::make('id', 'id')->fields([
+                    Input::make('heading', 'heading'),
+                    Input::make('subheading', 'subheading'),
+                    Input::make('link', 'link'),
+                ]),
+            ]),
+        ];
+    }
+
+    public function updated()
+    {
+        $this->contact->heading        = $this->data('contact.heading');
+        $this->contact->subheading     = $this->data('contact.subheading');
+        $this->contact->desc           = $this->data('contact.desc');
+        $this->contact->color          = $this->data('contact.color');
+        $this->contact->meta           = $this->data('contact.meta');
     }
 
     public function render()
@@ -33,23 +78,9 @@ class Create extends Component
         $this->validate();
 
         $this->contact->save();
-        $this->syncMedia();
+        $this->syncMedia($this->contact->id);
 
         return redirect()->route('admin.contacts.index');
-    }
-
-    public function addMedia($media): void
-    {
-        $this->mediaCollections[$media['collection_name']][] = $media;
-    }
-
-    public function removeMedia($media): void
-    {
-        $collection = collect($this->mediaCollections[$media['collection_name']]);
-
-        $this->mediaCollections[$media['collection_name']] = $collection->reject(fn ($item) => $item['uuid'] === $media['uuid'])->toArray();
-
-        $this->mediaToRemove[] = $media['uuid'];
     }
 
     protected function rules(): array
@@ -73,24 +104,19 @@ class Create extends Component
                 'exists:styles,id',
                 'nullable',
             ],
-            'contact.heading' => [
-                'string',
+            'contact.heading.*.*' => [
                 'nullable',
             ],
-            'contact.subheading' => [
-                'string',
+            'contact.subheading.*.*' => [
                 'nullable',
             ],
-            'contact.desc' => [
-                'string',
+            'contact.desc.*.*' => [
                 'nullable',
             ],
-            'contact.color' => [
-                'string',
+            'contact.color.*.*' => [
                 'nullable',
             ],
-            'contact.meta' => [
-                'string',
+            'contact.meta.*.*' => [
                 'nullable',
             ],
         ];
@@ -99,14 +125,5 @@ class Create extends Component
     protected function initListsForFields(): void
     {
         $this->listsForFields['style'] = Style::pluck('title', 'id')->toArray();
-    }
-
-    protected function syncMedia(): void
-    {
-        collect($this->mediaCollections)->flatten(1)
-            ->each(fn ($item) => Media::where('uuid', $item['uuid'])
-            ->update(['model_id' => $this->contact->id]));
-
-        Media::whereIn('uuid', $this->mediaToRemove)->delete();
     }
 }

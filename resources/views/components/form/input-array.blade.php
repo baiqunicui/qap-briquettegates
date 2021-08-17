@@ -18,7 +18,7 @@ $hasErrors = $errors->has($name);
         </div>
 
         @foreach($this->data($name, []) as $key => $value)
-        <div class="flex space-x-4">
+        <div class="block space-y-4">
             @foreach($props['fields'] as $field)
             <div class="w-full">
                 {{ $field->prefix($name . '.' . $key)->render()->with($field->data()) }}

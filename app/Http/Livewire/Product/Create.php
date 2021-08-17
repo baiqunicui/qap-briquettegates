@@ -4,23 +4,68 @@ namespace App\Http\Livewire\Product;
 
 use App\Models\Product;
 use App\Models\Style;
-use Livewire\Component;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Traits\WithUploadsMedia;
+use App\Traits\WithValidation;
 
-class Create extends Component
+use App\View\Components\Form\Arrayable;
+use App\View\Components\Form\Color;
+use App\View\Components\Form\Input;
+use App\View\Components\Form\InputArray;
+use App\View\Components\Form\Textarea;
+use App\View\Components\Form\FormComponent;
+
+class Create extends FormComponent
 {
+    use WithValidation, WithUploadsMedia;
+
     public Product $product;
-
-    public array $mediaToRemove = [];
-
-    public array $listsForFields = [];
-
-    public array $mediaCollections = [];
 
     public function mount(Product $product)
     {
         $this->product = $product;
+        $this->data = $product->toArray();
+
         $this->initListsForFields();
+    }
+
+    public function fields()
+    {
+        return [
+            Arrayable::make('product.subheading', 'subheading')->fields([
+                Textarea::make('en', 'en'),
+                Textarea::make('id', 'id'),
+            ]),
+            Arrayable::make('product.heading', 'heading')->fields([
+                Textarea::make('en', 'en'),
+                Textarea::make('id', 'id'),
+            ]),
+            Arrayable::make('product.desc', 'desc')->fields([
+                Textarea::make('en', 'en'),
+                Textarea::make('id', 'id'),
+            ]),
+            Color::make('product.color', 'color'),
+            Arrayable::make('product.meta', 'meta')->fields([
+                InputArray::make('en', 'en')->fields([
+                    Input::make('heading', 'heading'),
+                    Input::make('subheading', 'subheading'),
+                    Input::make('link', 'link'),
+                ]),
+                InputArray::make('id', 'id')->fields([
+                    Input::make('heading', 'heading'),
+                    Input::make('subheading', 'subheading'),
+                    Input::make('link', 'link'),
+                ]),
+            ]),
+        ];
+    }
+
+    public function updated()
+    {
+        $this->product->heading        = $this->data('product.heading');
+        $this->product->subheading     = $this->data('product.subheading');
+        $this->product->desc           = $this->data('product.desc');
+        $this->product->color          = $this->data('product.color');
+        $this->product->meta           = $this->data('product.meta');
     }
 
     public function render()
@@ -33,23 +78,9 @@ class Create extends Component
         $this->validate();
 
         $this->product->save();
-        $this->syncMedia();
+        $this->syncMedia($this->product->id);
 
         return redirect()->route('admin.products.index');
-    }
-
-    public function addMedia($media): void
-    {
-        $this->mediaCollections[$media['collection_name']][] = $media;
-    }
-
-    public function removeMedia($media): void
-    {
-        $collection = collect($this->mediaCollections[$media['collection_name']]);
-
-        $this->mediaCollections[$media['collection_name']] = $collection->reject(fn ($item) => $item['uuid'] === $media['uuid'])->toArray();
-
-        $this->mediaToRemove[] = $media['uuid'];
     }
 
     protected function rules(): array
@@ -73,24 +104,19 @@ class Create extends Component
                 'exists:styles,id',
                 'nullable',
             ],
-            'product.heading' => [
-                'string',
+            'product.heading.*.*' => [
                 'nullable',
             ],
-            'product.subheading' => [
-                'string',
+            'product.subheading.*.*' => [
                 'nullable',
             ],
-            'product.desc' => [
-                'string',
+            'product.desc.*.*' => [
                 'nullable',
             ],
-            'product.color' => [
-                'string',
+            'product.color.*.*' => [
                 'nullable',
             ],
-            'product.meta' => [
-                'string',
+            'product.meta.*.*' => [
                 'nullable',
             ],
         ];
@@ -99,14 +125,5 @@ class Create extends Component
     protected function initListsForFields(): void
     {
         $this->listsForFields['style'] = Style::pluck('title', 'id')->toArray();
-    }
-
-    protected function syncMedia(): void
-    {
-        collect($this->mediaCollections)->flatten(1)
-            ->each(fn ($item) => Media::where('uuid', $item['uuid'])
-            ->update(['model_id' => $this->product->id]));
-
-        Media::whereIn('uuid', $this->mediaToRemove)->delete();
     }
 }
