@@ -179,7 +179,7 @@
             <div class="grid grid-cols-1 gap-10 sm:gap-y-12 sm:gap-x-16 sm:grid-cols-2">
                 @foreach ($item->meta ?? [] as $key => $meta)
                 <ul>
-                    <h6>{{ 0 . $key + 1 }}</h6>
+                    <h6>{{ '0' . ($key + 1) }}</h6>
                     <p class="text-gray-400">{{ $meta[lang()][0]['desc'] ?? '' }}</p>
                 </ul>
                 @endforeach
