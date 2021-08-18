@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Footer;
 
 use App\Models\Footer;
 use App\Models\Style;
+use App\Models\Upload;
 use App\Traits\WithUploadsMedia;
 use App\Traits\WithValidation;
 
@@ -13,6 +14,7 @@ use App\View\Components\Form\Input;
 use App\View\Components\Form\InputArray;
 use App\View\Components\Form\Textarea;
 use App\View\Components\Form\FormComponent;
+use App\View\Components\Form\Select;
 
 class Create extends FormComponent
 {
@@ -45,6 +47,8 @@ class Create extends FormComponent
             ]),
             Color::make('footer.color', 'color'),
             Arrayable::make('footer.meta', 'meta')->fields([
+                Select::make('icon', 'icon')->options(Upload::pluck('title', 'id')->toArray()),
+                Color::make('color', 'color'),
                 InputArray::make('en', 'en')->fields([
                     Input::make('heading', 'heading'),
                     Input::make('subheading', 'subheading'),
