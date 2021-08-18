@@ -279,8 +279,11 @@
                 @foreach ($item->meta ?? [] as $key => $meta)
                 <a href="{{ $meta[lang()][0]['link'] ?? '' }}" target="_blank">
                     <div class="flex items-center pb-3 pr-3 space-x-4 sm:pr-16">
-                        <div class="flex items-center justify-center p-2 bg-green-400 sm:p-4 item-center">
-                            <x-atom.svg-facebook></x-atom.svg-facebook>
+                        <div class="flex items-center justify-center p-2 sm:p-4 item-center"
+                            style="background-color: {{$meta['color'] ?? '#f5f5f5'}}">
+                            @foreach ($upload->where('id', $meta['icon']) ?? [] as $item)
+                            <x-atom.img src="{{ $item->image->first()['url'] ?? '' }} " class="w-auto h-4"></x-atom.img>
+                            @endforeach
                         </div>
 
                         <ul>

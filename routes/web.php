@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProductListController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StyleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\Auth\UserProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -70,6 +71,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     // Contact Form List
     Route::resource('contact-form-lists', ContactFormListController::class, ['except' => ['store', 'update', 'destroy']]);
+
+    // Upload
+    Route::post('uploads/media', [UploadController::class, 'storeMedia'])->name('uploads.storeMedia');
+    Route::resource('uploads', UploadController::class, ['except' => ['store', 'update', 'destroy']]);
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'middleware' => ['auth']], function () {
