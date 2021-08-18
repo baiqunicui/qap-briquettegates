@@ -95,7 +95,7 @@
                 </x-slot>
             </x-mole.text-3>
 
-            <x-atom.img src="/assets/images/a1.jpg" class="h-[50vh] w-full"></x-atom.img>
+            <x-atom.img src="{{$item->image->first()['url'] ?? ''}}" class="h-[50vh] w-full"></x-atom.img>
         </x-orga.section>
     </x-orga.sectionFull>
 
