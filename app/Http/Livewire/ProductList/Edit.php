@@ -4,86 +4,27 @@ namespace App\Http\Livewire\ProductList;
 
 use App\Models\ProductList;
 use App\Models\Style;
-use App\Traits\WithUploadsMedia;
-use App\Traits\WithValidation;
+use Livewire\Component;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-use App\View\Components\Form\Arrayable;
-use App\View\Components\Form\Color;
-use App\View\Components\Form\Input;
-use App\View\Components\Form\InputArray;
-use App\View\Components\Form\Textarea;
-use App\View\Components\Form\FormComponent;
-use App\View\Components\Form\Select;
-
-class Edit extends FormComponent
+class Edit extends Component
 {
-    use WithValidation, WithUploadsMedia;
-
     public ProductList $productList;
+
+    public array $mediaToRemove = [];
+
+    public array $listsForFields = [];
+
+    public array $mediaCollections = [];
 
     public function mount(ProductList $productList)
     {
         $this->productList = $productList;
-        $this->data = $productList->toArray();
-
         $this->initListsForFields();
         $this->mediaCollections = [
             'product_list_image' => $productList->image,
 
             'product_list_imageproduct' => $productList->imageproduct,
-        ];
-    }
-
-    public function fields()
-    {
-        return [
-            Arrayable::make('subheading', 'subheading')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Arrayable::make('heading', 'heading')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Arrayable::make('desc', 'desc')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Color::make('color', 'color'),
-            Arrayable::make('meta', 'meta')->fields([
-                InputArray::make('en', 'en')->fields([
-                    Input::make('heading', 'heading'),
-                    Input::make('subheading', 'subheading'),
-                    Input::make('link', 'link'),
-                ]),
-                InputArray::make('id', 'id')->fields([
-                    Input::make('heading', 'heading'),
-                    Input::make('subheading', 'subheading'),
-                    Input::make('link', 'link'),
-                ]),
-            ]),
-            Arrayable::make('s_2_heading', 's_2_heading')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Arrayable::make('s_2_desc', 's_2_desc')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Arrayable::make('s_2_meta', 's_2_meta')->fields([
-                Color::make('color', 'color'),
-                Input::make('icon', 'icon'),
-                InputArray::make('en', 'en')->fields([
-                    Input::make('heading', 'heading'),
-                    Input::make('subheading', 'subheading'),
-                    Input::make('link', 'link'),
-                ]),
-                InputArray::make('id', 'id')->fields([
-                    Input::make('heading', 'heading'),
-                    Input::make('subheading', 'subheading'),
-                    Input::make('link', 'link'),
-                ]),
-            ]),
         ];
     }
 
@@ -94,21 +35,31 @@ class Edit extends FormComponent
 
     public function submit()
     {
-        $this->validation();
-        ProductList::find($this->productList->id)->update([
-            'heading'           => $this->data['heading'],
-            'subheading'        => $this->data['subheading'],
-            'desc'              => $this->data['desc'],
-            'color'             => $this->data['color'],
-            'meta'              => $this->data['meta'],
-            's_2_heading'       => $this->data['s_2_heading'],
-            's_2_desc'          => $this->data['s_2_desc'],
-            's_2_meta'          => $this->data['s_2_meta'],
-        ]);
+        $this->validate();
+
         $this->productList->save();
-        $this->syncMedia($this->productList->id);
+        $this->syncMedia();
 
         return redirect()->route('admin.product-lists.index');
+    }
+
+    public function addMedia($media): void
+    {
+        $this->mediaCollections[$media['collection_name']][] = $media;
+    }
+
+    public function removeMedia($media): void
+    {
+        $collection = collect($this->mediaCollections[$media['collection_name']]);
+
+        $this->mediaCollections[$media['collection_name']] = $collection->reject(fn ($item) => $item['uuid'] === $media['uuid'])->toArray();
+
+        $this->mediaToRemove[] = $media['uuid'];
+    }
+
+    public function getMediaCollection($name)
+    {
+        return $this->mediaCollections[$name];
     }
 
     protected function rules(): array
@@ -116,6 +67,7 @@ class Edit extends FormComponent
         return [
             'productList.slug' => [
                 'string',
+                'required',
                 'unique:product_lists,slug,' . $this->productList->id,
             ],
             'mediaCollections.product_list_image' => [
@@ -126,6 +78,31 @@ class Edit extends FormComponent
                 'integer',
                 'exists:media,id',
             ],
+            'productList.style_id' => [
+                'integer',
+                'exists:styles,id',
+                'nullable',
+            ],
+            'productList.heading' => [
+                'string',
+                'nullable',
+            ],
+            'productList.subheading' => [
+                'string',
+                'nullable',
+            ],
+            'productList.desc' => [
+                'string',
+                'nullable',
+            ],
+            'productList.color' => [
+                'string',
+                'nullable',
+            ],
+            'productList.meta' => [
+                'string',
+                'nullable',
+            ],
             'mediaCollections.product_list_imageproduct' => [
                 'array',
                 'nullable',
@@ -134,33 +111,16 @@ class Edit extends FormComponent
                 'integer',
                 'exists:media,id',
             ],
-            'productList.style_id' => [
-                'integer',
-                'exists:styles,id',
+            'productList.s_2_heading' => [
+                'string',
                 'nullable',
             ],
-            'productList.heading.*.*' => [
+            'productList.s_2_desc' => [
+                'string',
                 'nullable',
             ],
-            'productList.subheading.*.*' => [
-                'nullable',
-            ],
-            'productList.desc.*.*' => [
-                'nullable',
-            ],
-            'productList.color' => [
-                'nullable',
-            ],
-            'productList.meta.*.*' => [
-                'nullable',
-            ],
-            'productList.s_2_heading.*.*' => [
-                'nullable',
-            ],
-            'productList.s_2_desc.*.*' => [
-                'nullable',
-            ],
-            'productList.s_2_meta.*.*' => [
+            'productList.s_2_meta' => [
+                'string',
                 'nullable',
             ],
         ];
@@ -169,5 +129,14 @@ class Edit extends FormComponent
     protected function initListsForFields(): void
     {
         $this->listsForFields['style'] = Style::pluck('title', 'id')->toArray();
+    }
+
+    protected function syncMedia(): void
+    {
+        collect($this->mediaCollections)->flatten(1)
+            ->each(fn ($item) => Media::where('uuid', $item['uuid'])
+            ->update(['model_id' => $this->productList->id]));
+
+        Media::whereIn('uuid', $this->mediaToRemove)->delete();
     }
 }

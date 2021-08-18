@@ -8,16 +8,16 @@
                 @endforeach
             </select>
 
-            @can('product_list_delete')
+            @can('upload_delete')
                 <button class="btn btn-rose ml-3 disabled:opacity-50 disabled:cursor-not-allowed" type="button" wire:click="confirm('deleteSelected')" wire:loading.attr="disabled" {{ $this->selectedCount ? '' : 'disabled' }}>
                     {{ __('Delete Selected') }}
                 </button>
             @endcan
 
             @if(file_exists(app_path('Http/Livewire/ExcelExport.php')))
-                <livewire:excel-export model="ProductList" format="csv" />
-                <livewire:excel-export model="ProductList" format="xlsx" />
-                <livewire:excel-export model="ProductList" format="pdf" />
+                <livewire:excel-export model="Upload" format="csv" />
+                <livewire:excel-export model="Upload" format="xlsx" />
+                <livewire:excel-export model="Upload" format="pdf" />
             @endif
 
 
@@ -41,69 +41,72 @@
                         <th class="w-9">
                         </th>
                         <th class="w-28">
-                            {{ trans('cruds.productList.fields.id') }}
+                            {{ trans('cruds.upload.fields.id') }}
                             @include('components.table.sort', ['field' => 'id'])
                         </th>
                         <th>
-                            {{ trans('cruds.productList.fields.slug') }}
-                            @include('components.table.sort', ['field' => 'slug'])
+                            {{ trans('cruds.upload.fields.type') }}
+                            @include('components.table.sort', ['field' => 'type'])
                         </th>
                         <th>
-                            {{ trans('cruds.productList.fields.image') }}
+                            {{ trans('cruds.upload.fields.title') }}
+                            @include('components.table.sort', ['field' => 'title'])
                         </th>
                         <th>
-                            {{ trans('cruds.productList.fields.style') }}
-                            @include('components.table.sort', ['field' => 'style.title'])
+                            {{ trans('cruds.upload.fields.image') }}
                         </th>
                         <th>
-                            {{ trans('cruds.productList.fields.heading') }}
-                            @include('components.table.sort', ['field' => 'heading'])
+                            {{ trans('cruds.upload.fields.file') }}
                         </th>
                         <th>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($productLists as $productList)
+                    @forelse($uploads as $upload)
                         <tr>
                             <td>
-                                <input type="checkbox" value="{{ $productList->id }}" wire:model="selected">
+                                <input type="checkbox" value="{{ $upload->id }}" wire:model="selected">
                             </td>
                             <td>
-                                {{ $productList->id }}
+                                {{ $upload->id }}
                             </td>
                             <td>
-                                {{ $productList->slug }}
+                                {{ $upload->type_label }}
                             </td>
                             <td>
-                                @foreach($productList->image as $key => $entry)
+                                {{ $upload->title }}
+                            </td>
+                            <td>
+                                @foreach($upload->image as $key => $entry)
                                     <a class="link-photo" href="{{ $entry['url'] }}">
                                         <img src="{{ $entry['thumbnail'] }}" alt="{{ $entry['name'] }}" title="{{ $entry['name'] }}">
                                     </a>
                                 @endforeach
                             </td>
                             <td>
-                                @if($productList->style)
-                                    <span class="badge badge-relationship">{{ $productList->style->title ?? '' }}</span>
-                                @endif
-                            </td>
-                            <td>
-                                {{ $productList->heading }}
+                                @foreach($upload->file as $key => $entry)
+                                    <a class="link-light-blue" href="{{ $entry['url'] }}">
+                                        <i class="far fa-file">
+                                        </i>
+                                        {{ $entry['file_name'] }}
+                                    </a>
+                                @endforeach
                             </td>
                             <td>
                                 <div class="flex justify-end">
-                                    @can('product_list_show')
-                                        <a class="btn btn-sm btn-info mr-2" href="{{ route('admin.product-lists.show', $productList) }}">
+                                    @can('upload_show')
+                                        <a class="btn btn-sm btn-info mr-2" href="{{ route('admin.uploads.show', $upload) }}">
                                             {{ trans('global.view') }}
                                         </a>
                                     @endcan
-                                    @can('product_list_edit')
-                                        <a class="btn btn-sm btn-success mr-2" href="{{ route('admin.product-lists.edit', $productList) }}">
+                                    @can('upload_edit')
+                                        <a class="btn btn-sm btn-success mr-2" href="{{ route('admin.uploads.edit', $upload) }}">
                                             {{ trans('global.edit') }}
                                         </a>
                                     @endcan
-                                    @can('product_list_delete')
-                                        <button class="btn btn-sm btn-rose mr-2" type="button" wire:click="confirm('delete', {{ $productList->id }})" wire:loading.attr="disabled">
+                                    @can('upload_delete')
+                                        <button class="btn btn-sm btn-rose mr-2" type="button" wire:click="confirm('delete', {{ $upload->id }})" wire:loading.attr="disabled">
                                             {{ trans('global.delete') }}
                                         </button>
                                     @endcan
@@ -130,7 +133,7 @@
                     {{ __('Entries selected') }}
                 </p>
             @endif
-            {{ $productLists->links() }}
+            {{ $uploads->links() }}
         </div>
     </div>
 </div>

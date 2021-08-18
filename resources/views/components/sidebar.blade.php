@@ -166,6 +166,15 @@
                         </a>
                     </li>
                 @endcan
+                @can('upload_access')
+                    <li class="items-center">
+                        <a class="{{ request()->is("admin/uploads*") ? "sidebar-nav-active" : "sidebar-nav" }}" href="{{ route("admin.uploads.index") }}">
+                            <i class="fa-fw c-sidebar-nav-icon fas fa-cogs">
+                            </i>
+                            {{ trans('cruds.upload.title') }}
+                        </a>
+                    </li>
+                @endcan
 
                 @if(file_exists(app_path('Http/Controllers/Auth/UserProfileController.php')))
                     @can('auth_profile_edit')

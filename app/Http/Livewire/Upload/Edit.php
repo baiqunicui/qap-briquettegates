@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Livewire\About;
+namespace App\Http\Livewire\Upload;
 
-use App\Models\About;
-use App\Models\Style;
+use App\Models\Upload;
 use Livewire\Component;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Create extends Component
+class Edit extends Component
 {
-    public About $about;
+    public Upload $upload;
 
     public array $mediaToRemove = [];
 
@@ -17,25 +16,29 @@ class Create extends Component
 
     public array $mediaCollections = [];
 
-    public function mount(About $about)
+    public function mount(Upload $upload)
     {
-        $this->about = $about;
+        $this->upload = $upload;
         $this->initListsForFields();
+        $this->mediaCollections = [
+            'upload_image' => $upload->image,
+            'upload_file'  => $upload->file,
+        ];
     }
 
     public function render()
     {
-        return view('livewire.about.create');
+        return view('livewire.upload.edit');
     }
 
     public function submit()
     {
         $this->validate();
 
-        $this->about->save();
+        $this->upload->save();
         $this->syncMedia();
 
-        return redirect()->route('admin.abouts.index');
+        return redirect()->route('admin.uploads.index');
     }
 
     public function addMedia($media): void
@@ -52,60 +55,51 @@ class Create extends Component
         $this->mediaToRemove[] = $media['uuid'];
     }
 
+    public function getMediaCollection($name)
+    {
+        return $this->mediaCollections[$name];
+    }
+
     protected function rules(): array
     {
         return [
-            'about.urutan' => [
-                'string',
-                'required',
-                'unique:abouts,urutan',
+            'upload.type' => [
+                'nullable',
+                'in:' . implode(',', array_keys($this->listsForFields['type'])),
             ],
-            'mediaCollections.about_image' => [
+            'upload.title' => [
+                'string',
+                'nullable',
+            ],
+            'mediaCollections.upload_image' => [
                 'array',
                 'nullable',
             ],
-            'mediaCollections.about_image.*.id' => [
+            'mediaCollections.upload_image.*.id' => [
                 'integer',
                 'exists:media,id',
             ],
-            'about.style_id' => [
+            'mediaCollections.upload_file' => [
+                'array',
+                'nullable',
+            ],
+            'mediaCollections.upload_file.*.id' => [
                 'integer',
-                'exists:styles,id',
-                'nullable',
-            ],
-            'about.heading' => [
-                'string',
-                'nullable',
-            ],
-            'about.subheading' => [
-                'string',
-                'nullable',
-            ],
-            'about.desc' => [
-                'string',
-                'nullable',
-            ],
-            'about.color' => [
-                'string',
-                'nullable',
-            ],
-            'about.meta' => [
-                'string',
-                'nullable',
+                'exists:media,id',
             ],
         ];
     }
 
     protected function initListsForFields(): void
     {
-        $this->listsForFields['style'] = Style::pluck('title', 'id')->toArray();
+        $this->listsForFields['type'] = $this->upload::TYPE_SELECT;
     }
 
     protected function syncMedia(): void
     {
         collect($this->mediaCollections)->flatten(1)
             ->each(fn ($item) => Media::where('uuid', $item['uuid'])
-            ->update(['model_id' => $this->about->id]));
+            ->update(['model_id' => $this->upload->id]));
 
         Media::whereIn('uuid', $this->mediaToRemove)->delete();
     }

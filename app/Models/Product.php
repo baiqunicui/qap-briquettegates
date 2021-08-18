@@ -34,13 +34,6 @@ class Product extends Model implements HasMedia
         'heading',
     ];
 
-    protected $casts = [
-        'heading' => 'array',
-        'subheading' => 'array',
-        'desc' => 'array',
-        'meta' => 'array',
-    ];
-
     protected $appends = [
         'image',
     ];
