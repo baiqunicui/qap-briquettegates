@@ -4,63 +4,25 @@ namespace App\Http\Livewire\About;
 
 use App\Models\About;
 use App\Models\Style;
-use App\Traits\WithUploadsMedia;
-use App\Traits\WithValidation;
+use Livewire\Component;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-use App\View\Components\Form\Arrayable;
-use App\View\Components\Form\Color;
-use App\View\Components\Form\Input;
-use App\View\Components\Form\InputArray;
-use App\View\Components\Form\Textarea;
-use App\View\Components\Form\FormComponent;
-
-class Edit extends FormComponent
+class Edit extends Component
 {
-    use WithValidation, WithUploadsMedia;
-
     public About $about;
+
+    public array $mediaToRemove = [];
+
+    public array $listsForFields = [];
+
+    public array $mediaCollections = [];
 
     public function mount(About $about)
     {
         $this->about = $about;
-        $this->data = $about->toArray();
-
         $this->initListsForFields();
         $this->mediaCollections = [
             'about_image' => $about->image,
-        ];
-    }
-
-    public function fields()
-    {
-        return [
-            Arrayable::make('subheading', 'subheading')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Arrayable::make('heading', 'heading')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Arrayable::make('desc', 'desc')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Color::make('color', 'color'),
-            Arrayable::make('meta', 'meta')->fields([
-                InputArray::make('en', 'en')->fields([
-                    Input::make('heading', 'heading'),
-                    Textarea::make('desc', 'desc'),
-                    Input::make('subheading', 'subheading'),
-                    Input::make('link', 'link'),
-                ]),
-                InputArray::make('id', 'id')->fields([
-                    Input::make('heading', 'heading'),
-                    Textarea::make('desc', 'desc'),
-                    Input::make('subheading', 'subheading'),
-                    Input::make('link', 'link'),
-                ]),
-            ]),
         ];
     }
 
@@ -71,18 +33,31 @@ class Edit extends FormComponent
 
     public function submit()
     {
-        $this->validation();
-        About::find($this->about->id)->update([
-            'heading'           => $this->data['heading'],
-            'subheading'        => $this->data['subheading'],
-            'desc'              => $this->data['desc'],
-            'color'             => $this->data['color'],
-            'meta'              => $this->data['meta'],
-        ]);
+        $this->validate();
+
         $this->about->save();
-        $this->syncMedia($this->about->id);
+        $this->syncMedia();
 
         return redirect()->route('admin.abouts.index');
+    }
+
+    public function addMedia($media): void
+    {
+        $this->mediaCollections[$media['collection_name']][] = $media;
+    }
+
+    public function removeMedia($media): void
+    {
+        $collection = collect($this->mediaCollections[$media['collection_name']]);
+
+        $this->mediaCollections[$media['collection_name']] = $collection->reject(fn ($item) => $item['uuid'] === $media['uuid'])->toArray();
+
+        $this->mediaToRemove[] = $media['uuid'];
+    }
+
+    public function getMediaCollection($name)
+    {
+        return $this->mediaCollections[$name];
     }
 
     protected function rules(): array
@@ -90,6 +65,7 @@ class Edit extends FormComponent
         return [
             'about.urutan' => [
                 'string',
+                'required',
                 'unique:abouts,urutan,' . $this->about->id,
             ],
             'mediaCollections.about_image' => [
@@ -105,19 +81,24 @@ class Edit extends FormComponent
                 'exists:styles,id',
                 'nullable',
             ],
-            'about.heading.*.*' => [
+            'about.heading' => [
+                'string',
                 'nullable',
             ],
-            'about.subheading.*.*' => [
+            'about.subheading' => [
+                'string',
                 'nullable',
             ],
-            'about.desc.*.*' => [
+            'about.desc' => [
+                'string',
                 'nullable',
             ],
             'about.color' => [
+                'string',
                 'nullable',
             ],
-            'about.meta.*.*' => [
+            'about.meta' => [
+                'string',
                 'nullable',
             ],
         ];
@@ -126,5 +107,14 @@ class Edit extends FormComponent
     protected function initListsForFields(): void
     {
         $this->listsForFields['style'] = Style::pluck('title', 'id')->toArray();
+    }
+
+    protected function syncMedia(): void
+    {
+        collect($this->mediaCollections)->flatten(1)
+            ->each(fn ($item) => Media::where('uuid', $item['uuid'])
+            ->update(['model_id' => $this->about->id]));
+
+        Media::whereIn('uuid', $this->mediaToRemove)->delete();
     }
 }

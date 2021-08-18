@@ -81,14 +81,6 @@ return [
     */
 
     'locale' => 'en',
-    'available_locales' => [
-        'en',
-        'id'
-    ],
-    'languages' => [
-        'en' => 'English',
-        'id' => 'Indonesia',
-    ],
 
     /*
     |--------------------------------------------------------------------------

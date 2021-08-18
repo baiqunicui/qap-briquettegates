@@ -1,37 +1,41 @@
 <?php
 
-namespace App\Http\Livewire\Header;
+namespace App\Http\Livewire\Upload;
 
-use App\Models\Header;
+use App\Models\Upload;
 use Livewire\Component;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Create extends Component
 {
-    public Header $header;
+    public Upload $upload;
 
     public array $mediaToRemove = [];
 
+    public array $listsForFields = [];
+
     public array $mediaCollections = [];
 
-    public function mount(Header $header)
+    public function mount(Upload $upload)
     {
-        $this->header = $header;
+        $this->upload       = $upload;
+        $this->upload->type = 'image';
+        $this->initListsForFields();
     }
 
     public function render()
     {
-        return view('livewire.header.create');
+        return view('livewire.upload.create');
     }
 
     public function submit()
     {
         $this->validate();
 
-        $this->header->save();
+        $this->upload->save();
         $this->syncMedia();
 
-        return redirect()->route('admin.headers.index');
+        return redirect()->route('admin.uploads.index');
     }
 
     public function addMedia($media): void
@@ -51,34 +55,43 @@ class Create extends Component
     protected function rules(): array
     {
         return [
-            'mediaCollections.header_logo' => [
+            'upload.type' => [
+                'nullable',
+                'in:' . implode(',', array_keys($this->listsForFields['type'])),
+            ],
+            'upload.title' => [
+                'string',
+                'nullable',
+            ],
+            'mediaCollections.upload_image' => [
                 'array',
                 'nullable',
             ],
-            'mediaCollections.header_logo.*.id' => [
+            'mediaCollections.upload_image.*.id' => [
                 'integer',
                 'exists:media,id',
             ],
-            'header.menu' => [
-                'string',
+            'mediaCollections.upload_file' => [
+                'array',
                 'nullable',
             ],
-            'header.lang' => [
-                'string',
-                'nullable',
-            ],
-            'header.button' => [
-                'string',
-                'nullable',
+            'mediaCollections.upload_file.*.id' => [
+                'integer',
+                'exists:media,id',
             ],
         ];
+    }
+
+    protected function initListsForFields(): void
+    {
+        $this->listsForFields['type'] = $this->upload::TYPE_SELECT;
     }
 
     protected function syncMedia(): void
     {
         collect($this->mediaCollections)->flatten(1)
             ->each(fn ($item) => Media::where('uuid', $item['uuid'])
-            ->update(['model_id' => $this->header->id]));
+            ->update(['model_id' => $this->upload->id]));
 
         Media::whereIn('uuid', $this->mediaToRemove)->delete();
     }

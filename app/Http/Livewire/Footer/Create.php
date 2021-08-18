@@ -4,68 +4,23 @@ namespace App\Http\Livewire\Footer;
 
 use App\Models\Footer;
 use App\Models\Style;
-use App\Traits\WithUploadsMedia;
-use App\Traits\WithValidation;
+use Livewire\Component;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-use App\View\Components\Form\Arrayable;
-use App\View\Components\Form\Color;
-use App\View\Components\Form\Input;
-use App\View\Components\Form\InputArray;
-use App\View\Components\Form\Textarea;
-use App\View\Components\Form\FormComponent;
-
-class Create extends FormComponent
+class Create extends Component
 {
-    use WithValidation, WithUploadsMedia;
-
     public Footer $footer;
+
+    public array $mediaToRemove = [];
+
+    public array $listsForFields = [];
+
+    public array $mediaCollections = [];
 
     public function mount(Footer $footer)
     {
         $this->footer = $footer;
-        $this->data = $footer->toArray();
-
         $this->initListsForFields();
-    }
-
-    public function fields()
-    {
-        return [
-            Arrayable::make('footer.subheading', 'subheading')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Arrayable::make('footer.heading', 'heading')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Arrayable::make('footer.desc', 'desc')->fields([
-                Textarea::make('en', 'en'),
-                Textarea::make('id', 'id'),
-            ]),
-            Color::make('footer.color', 'color'),
-            Arrayable::make('footer.meta', 'meta')->fields([
-                InputArray::make('en', 'en')->fields([
-                    Input::make('heading', 'heading'),
-                    Input::make('subheading', 'subheading'),
-                    Input::make('link', 'link'),
-                ]),
-                InputArray::make('id', 'id')->fields([
-                    Input::make('heading', 'heading'),
-                    Input::make('subheading', 'subheading'),
-                    Input::make('link', 'link'),
-                ]),
-            ]),
-        ];
-    }
-
-    public function updated()
-    {
-        $this->footer->heading        = $this->data('footer.heading');
-        $this->footer->subheading     = $this->data('footer.subheading');
-        $this->footer->desc           = $this->data('footer.desc');
-        $this->footer->color          = $this->data('footer.color');
-        $this->footer->meta           = $this->data('footer.meta');
     }
 
     public function render()
@@ -78,9 +33,23 @@ class Create extends FormComponent
         $this->validate();
 
         $this->footer->save();
-        $this->syncMedia($this->footer->id);
+        $this->syncMedia();
 
         return redirect()->route('admin.footers.index');
+    }
+
+    public function addMedia($media): void
+    {
+        $this->mediaCollections[$media['collection_name']][] = $media;
+    }
+
+    public function removeMedia($media): void
+    {
+        $collection = collect($this->mediaCollections[$media['collection_name']]);
+
+        $this->mediaCollections[$media['collection_name']] = $collection->reject(fn ($item) => $item['uuid'] === $media['uuid'])->toArray();
+
+        $this->mediaToRemove[] = $media['uuid'];
     }
 
     protected function rules(): array
@@ -104,19 +73,24 @@ class Create extends FormComponent
                 'exists:styles,id',
                 'nullable',
             ],
-            'footer.heading.*.*' => [
+            'footer.heading' => [
+                'string',
                 'nullable',
             ],
-            'footer.subheading.*.*' => [
+            'footer.subheading' => [
+                'string',
                 'nullable',
             ],
-            'footer.desc.*.*' => [
+            'footer.desc' => [
+                'string',
                 'nullable',
             ],
             'footer.color' => [
+                'string',
                 'nullable',
             ],
-            'footer.meta.*.*' => [
+            'footer.meta' => [
+                'string',
                 'nullable',
             ],
         ];
@@ -125,5 +99,14 @@ class Create extends FormComponent
     protected function initListsForFields(): void
     {
         $this->listsForFields['style'] = Style::pluck('title', 'id')->toArray();
+    }
+
+    protected function syncMedia(): void
+    {
+        collect($this->mediaCollections)->flatten(1)
+            ->each(fn ($item) => Media::where('uuid', $item['uuid'])
+            ->update(['model_id' => $this->footer->id]));
+
+        Media::whereIn('uuid', $this->mediaToRemove)->delete();
     }
 }

@@ -6,52 +6,49 @@ use \DateTimeInterface;
 use App\Support\HasAdvancedFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Home extends Model implements HasMedia
+class Upload extends Model implements HasMedia
 {
     use HasFactory;
     use HasAdvancedFilter;
-    use SoftDeletes;
     use InteractsWithMedia;
 
-    public $table = 'homes';
+    public const TYPE_SELECT = [
+        'image' => 'image',
+        'file'  => 'file',
+    ];
+
+    public $table = 'uploads';
 
     public $orderable = [
         'id',
-        'urutan',
-        'style.title',
-        'heading',
+        'type',
+        'title',
     ];
 
     public $filterable = [
         'id',
-        'urutan',
-        'style.title',
-        'heading',
+        'type',
+        'title',
     ];
 
     protected $appends = [
         'image',
+        'file',
+    ];
+
+    protected $fillable = [
+        'type',
+        'title',
     ];
 
     protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
-    ];
-
-    protected $fillable = [
-        'urutan',
-        'style_id',
-        'heading',
-        'subheading',
-        'desc',
-        'color',
-        'meta',
     ];
 
     public function registerMediaConversions(Media $media = null): void
@@ -72,9 +69,14 @@ class Home extends Model implements HasMedia
             ->fit('crop', $thumbnailPreviewWidth, $thumbnailPreviewHeight);
     }
 
+    public function getTypeLabelAttribute($value)
+    {
+        return static::TYPE_SELECT[$this->type] ?? null;
+    }
+
     public function getImageAttribute()
     {
-        return $this->getMedia('home_image')->map(function ($item) {
+        return $this->getMedia('upload_image')->map(function ($item) {
             $media = $item->toArray();
             $media['url'] = $item->getUrl();
             $media['thumbnail'] = $item->getUrl('thumbnail');
@@ -84,9 +86,14 @@ class Home extends Model implements HasMedia
         });
     }
 
-    public function style()
+    public function getFileAttribute()
     {
-        return $this->belongsTo(Style::class);
+        return $this->getMedia('upload_file')->map(function ($item) {
+            $media = $item->toArray();
+            $media['url'] = $item->getUrl();
+
+            return $media;
+        });
     }
 
     protected function serializeDate(DateTimeInterface $date)

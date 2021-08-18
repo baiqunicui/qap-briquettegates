@@ -11,16 +11,13 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductListController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\StyleController;
+use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\UserProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/',             App\Http\Livewire\Home\FeIndex::class)->name('frontend.home');
-Route::get('/about',        App\Http\Livewire\About\FeIndex::class)->name('frontend.about.index');
-Route::get('/products',     App\Http\Livewire\Product\FeIndex::class)->name('frontend.products.index');
-Route::get('/products/{item:slug}',   App\Http\Livewire\ProductList\FeIndex::class)->name('frontend.services.show');
-Route::get('/contact',      App\Http\Livewire\Contact\FeIndex::class)->name('frontend.contact.index');
+Route::redirect('/', '/login');
 
 Auth::routes(['register' => false]);
 
@@ -70,6 +67,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     // Contact Form List
     Route::resource('contact-form-lists', ContactFormListController::class, ['except' => ['store', 'update', 'destroy']]);
+
+    // Upload
+    Route::post('uploads/media', [UploadController::class, 'storeMedia'])->name('uploads.storeMedia');
+    Route::resource('uploads', UploadController::class, ['except' => ['store', 'update', 'destroy']]);
 });
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'middleware' => ['auth']], function () {

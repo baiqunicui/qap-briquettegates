@@ -3,62 +3,22 @@
 namespace App\Http\Livewire\Header;
 
 use App\Models\Header;
-use App\Traits\WithUploadsMedia;
-use App\Traits\WithValidation;
+use Livewire\Component;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-use App\View\Components\Form\Arrayable;
-use App\View\Components\Form\Color;
-use App\View\Components\Form\Input;
-use App\View\Components\Form\InputArray;
-use App\View\Components\Form\Textarea;
-use App\View\Components\Form\FormComponent;
-
-class Edit extends FormComponent
+class Edit extends Component
 {
-    use WithValidation, WithUploadsMedia;
-
     public Header $header;
+
+    public array $mediaToRemove = [];
+
+    public array $mediaCollections = [];
 
     public function mount(Header $header)
     {
-        $this->header = $header;
-        $this->data = $header->toArray();
-
+        $this->header           = $header;
         $this->mediaCollections = [
             'header_logo' => $header->logo,
-        ];
-    }
-
-
-    public function fields()
-    {
-        return [
-            Arrayable::make('menu', 'menu')->fields([
-                InputArray::make('en', 'en')->fields([
-                    Input::make('heading', 'heading'),
-                    Input::make('link', 'link'),
-                ]),
-                InputArray::make('id', 'id')->fields([
-                    Input::make('heading', 'heading'),
-                    Input::make('link', 'link'),
-                ]),
-            ]),
-            Arrayable::make('lang', 'lang')->fields([
-                InputArray::make('en', 'en')->fields([
-                    Input::make('heading', 'heading'),
-                    Input::make('link', 'link'),
-                ]),
-                InputArray::make('id', 'id')->fields([
-                    Input::make('heading', 'heading'),
-                    Input::make('link', 'link'),
-                ]),
-            ]),
-            Arrayable::make('button', 'button')->fields([
-                Input::make('en', 'en'),
-                Input::make('id', 'id'),
-                Color::make('color', 'color'),
-                Input::make('link', 'link'),
-            ]),
         ];
     }
 
@@ -69,16 +29,31 @@ class Edit extends FormComponent
 
     public function submit()
     {
-        $this->validation();
-        Header::find($this->header->id)->update([
-            'menu' => $this->data['menu'],
-            'lang' => $this->data['lang'],
-            'button' => $this->data['button'],
-        ]);
+        $this->validate();
+
         $this->header->save();
-        $this->syncMedia($this->header->id);
+        $this->syncMedia();
 
         return redirect()->route('admin.headers.index');
+    }
+
+    public function addMedia($media): void
+    {
+        $this->mediaCollections[$media['collection_name']][] = $media;
+    }
+
+    public function removeMedia($media): void
+    {
+        $collection = collect($this->mediaCollections[$media['collection_name']]);
+
+        $this->mediaCollections[$media['collection_name']] = $collection->reject(fn ($item) => $item['uuid'] === $media['uuid'])->toArray();
+
+        $this->mediaToRemove[] = $media['uuid'];
+    }
+
+    public function getMediaCollection($name)
+    {
+        return $this->mediaCollections[$name];
     }
 
     protected function rules(): array
@@ -92,15 +67,27 @@ class Edit extends FormComponent
                 'integer',
                 'exists:media,id',
             ],
-            'header.menu.*.*' => [
+            'header.menu' => [
+                'string',
                 'nullable',
             ],
-            'header.lang.*.*' => [
+            'header.lang' => [
+                'string',
                 'nullable',
             ],
-            'header.button.*.*' => [
+            'header.button' => [
+                'string',
                 'nullable',
             ],
         ];
+    }
+
+    protected function syncMedia(): void
+    {
+        collect($this->mediaCollections)->flatten(1)
+            ->each(fn ($item) => Media::where('uuid', $item['uuid'])
+            ->update(['model_id' => $this->header->id]));
+
+        Media::whereIn('uuid', $this->mediaToRemove)->delete();
     }
 }
