@@ -1,104 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
-        <loc>http://briquettegates.test/</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/</loc>
+        <lastmod>2021-08-20T22:41:54+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/?lang=en</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/?lang=en</loc>
+        <lastmod>2021-08-20T22:41:54+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/?lang=id</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/?lang=id</loc>
+        <lastmod>2021-08-20T22:41:56+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/about?lang=en</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/about?lang=en</loc>
+        <lastmod>2021-08-20T22:41:55+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/about?lang=id</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/about?lang=id</loc>
+        <lastmod>2021-08-20T22:41:56+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/contact?lang=en</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/contact?lang=en</loc>
+        <lastmod>2021-08-20T22:41:55+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/contact?lang=id</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/contact?lang=id</loc>
+        <lastmod>2021-08-20T22:41:56+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/products/coconut-briquette-charcoal</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/products/coconut-briquette-charcoal</loc>
+        <lastmod>2021-08-20T22:41:55+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/products/coconut-briquette-charcoal?lang=en</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/products/coconut-briquette-charcoal?lang=en</loc>
+        <lastmod>2021-08-20T22:41:56+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/products/coconut-briquette-charcoal?lang=id</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/products/coconut-briquette-charcoal?lang=id</loc>
+        <lastmod>2021-08-20T22:41:56+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/products/wood-briquette-charcoal</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/products/wood-briquette-charcoal</loc>
+        <lastmod>2021-08-20T22:41:55+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/products/wood-briquette-charcoal?lang=en</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/products/wood-briquette-charcoal?lang=en</loc>
+        <lastmod>2021-08-20T22:41:56+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/products/wood-briquette-charcoal?lang=id</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/products/wood-briquette-charcoal?lang=id</loc>
+        <lastmod>2021-08-20T22:41:56+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/products?lang=en</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/products?lang=en</loc>
+        <lastmod>2021-08-20T22:41:55+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test/products?lang=id</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com/products?lang=id</loc>
+        <lastmod>2021-08-20T22:41:56+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test?lang=en</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com?lang=en</loc>
+        <lastmod>2021-08-20T22:41:55+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>http://briquettegates.test?lang=id</loc>
-        <lastmod>2021-08-20T22:23:15+00:00</lastmod>
+        <loc>https://briquettegates.com?lang=id</loc>
+        <lastmod>2021-08-20T22:41:55+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
     </url>
