@@ -243,22 +243,7 @@
         </x-orga.section>
 
         <x-orga.section>
-            <div class="block w-full">
-                <form action="submit" class="pb-20 space-y-3 sm:space-y-6">
-                    <div class="space-y-3 sm:space-y-0 sm:space-x-6 sm:flex">
-                        <x-mole.input.text placeholder="name" label="name" model="" />
-                        <x-mole.input.text placeholder="email" label="name" model="" />
-                        <x-mole.input.text placeholder="phone" label="name" model="" />
-                    </div>
-
-                    <x-mole.input.text placeholder="name" label="name" model="" />
-                    <x-mole.input.textarea placeholder="name" label="name" model="" />
-                </form>
-
-                <div class="p-4 sm:py-6 sm:px-10 bg-gray-800 w-full sm:w-[40%]">
-                    <h6 class="text-white">{{'Submit'}}</h6>
-                </div>
-            </div>
+            <livewire:contact-form-list.fe-index>
         </x-orga.section>
     </x-orga.sectionFull>
 
