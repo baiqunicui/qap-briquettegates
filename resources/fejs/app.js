@@ -1,5 +1,5 @@
 require("./alpine.min.js");
-require("./alpine-clipboard.umd");
+// require("./alpine-clipboard.umd");
 // require('./splide.js');
 // window.ImageTool = require("@editorjs/image");
 // window.List = require("@editorjs/list");

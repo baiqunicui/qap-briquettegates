@@ -23,7 +23,7 @@
     <x-orga.section class="pb-12">
         <div class="flex items-center justify-between w-full">
             @foreach ($item->meta ?? [] as $meta)
-            <ul>
+            <ul class="hidden lg:flex">
                 <a href="{{ $meta[lang()][0]['link'] ?? '' }}">
                     <label>{{ $meta[lang()][0]['heading'] ?? '' }}</label>
                     <small>{{ $meta[lang()][0]['subheading'] ?? '' }}</small>
@@ -34,7 +34,10 @@
             <div class="flex items-center justify-between w-full sm:w-auto sm:space-x-8">
                 <label>{!!'Share'!!}</label>
                 <x-atom.svg-line class="w-16 sm:w-32"></x-atom.svg-line>
-                <x-atom.img src="/assets/share.svg"></x-atom.img>
+                <button id="btn" data-clipboard-text="{{ url()->current() . '?lang=' . lang() }}"
+                    class="transform hover:scale-110 motion-reduce:transform-none">
+                    <x-atom.img src="/assets/share.svg"></x-atom.img>
+                </button>
             </div>
         </div>
     </x-orga.section>
