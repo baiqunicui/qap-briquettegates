@@ -1,6 +1,7 @@
 <x-orga.sectionFull id="{{ $item->urutan }}" style="background-color: {{ $item->color }}">
-    <x-orga.section class="my-32 sm:my-auto">
-        <x-mole.text-1>
+    <x-orga.section
+        class="flex flex-col-reverse my-auto space-y-10 space-y-reverse sm:items-center sm:justify-between sm:flex-row sm:space-y-0">
+        <x-mole.text-2 class="text-center sm:text-left">
             <x-slot name="subheading">
                 {!! $item->subheading[0][lang()] ?? '' !!}
             </x-slot>
@@ -12,11 +13,15 @@
             <x-slot name="desc">
                 {!! $item->desc[0][lang()] ?? '' !!}
             </x-slot>
-        </x-mole.text-1>
+        </x-mole.text-2>
+
+        <div>
+            <x-atom.img src="{{$item->image->first()['url'] ?? ''}}"></x-atom.img>
+        </div>
     </x-orga.section>
 
     <x-orga.section class="pb-12">
-        <div class="flex flex-wrap">
+        <div class="flex items-center justify-between w-full">
             @foreach ($item->meta ?? [] as $meta)
             <ul>
                 <a href="{{ $meta[lang()][0]['link'] ?? '' }}">
@@ -25,13 +30,12 @@
                 </a>
             </ul>
             @endforeach
+
+            <div class="flex items-center justify-between w-full sm:w-auto sm:space-x-8">
+                <label>{!!'Share'!!}</label>
+                <x-atom.svg-line class="w-16 sm:w-32"></x-atom.svg-line>
+                <x-atom.img src="/assets/share.svg"></x-atom.img>
+            </div>
         </div>
     </x-orga.section>
-
-    @isset($item->image)
-    <div class="absolute right-0 bottom-32 sm:bottom-0 sm:my-auto">
-        <x-atom.img src="{{$item->image->first()['url'] ?? ''}}" class="w-[80%] lg:w-[100%] ml-auto">
-        </x-atom.img>
-    </div>
-    @endisset
 </x-orga.sectionFull>

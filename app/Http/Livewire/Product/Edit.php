@@ -49,11 +49,13 @@ class Edit extends FormComponent
             Arrayable::make('meta', 'meta')->fields([
                 InputArray::make('en', 'en')->fields([
                     Input::make('heading', 'heading'),
+                    Textarea::make('desc', 'desc'),
                     Input::make('subheading', 'subheading'),
                     Input::make('link', 'link'),
                 ]),
                 InputArray::make('id', 'id')->fields([
                     Input::make('heading', 'heading'),
+                    Textarea::make('desc', 'desc'),
                     Input::make('subheading', 'subheading'),
                     Input::make('link', 'link'),
                 ]),
