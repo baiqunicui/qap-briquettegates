@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Product;
 
 use App\Models\Product;
 use App\Models\Style;
+use App\Models\Upload;
 use App\Traits\WithUploadsMedia;
 use App\Traits\WithValidation;
 
@@ -13,6 +14,7 @@ use App\View\Components\Form\Input;
 use App\View\Components\Form\InputArray;
 use App\View\Components\Form\Textarea;
 use App\View\Components\Form\FormComponent;
+use App\View\Components\Form\Select;
 
 class Edit extends FormComponent
 {
@@ -47,18 +49,11 @@ class Edit extends FormComponent
             ]),
             Color::make('color', 'color'),
             Arrayable::make('meta', 'meta')->fields([
-                InputArray::make('en', 'en')->fields([
-                    Input::make('heading', 'heading'),
-                    Textarea::make('desc', 'desc'),
-                    Input::make('subheading', 'subheading'),
-                    Input::make('link', 'link'),
-                ]),
-                InputArray::make('id', 'id')->fields([
-                    Input::make('heading', 'heading'),
-                    Textarea::make('desc', 'desc'),
-                    Input::make('subheading', 'subheading'),
-                    Input::make('link', 'link'),
-                ]),
+                Select::make('foto', 'foto')->options(Upload::pluck('title', 'id')->toArray()),
+                Input::make('nama', 'nama'),
+                Input::make('jabatan', 'jabatan'),
+                Input::make('linkedin', 'linkedin'),
+                Input::make('instagram', 'instagram'),
             ]),
         ];
     }

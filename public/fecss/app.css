@@ -1927,11 +1927,11 @@ small {
 .z-\[100\] {
 	z-index: 100;
 }
-.col-span-2 {
-	grid-column: span 2 / span 2;
-}
 .col-span-3 {
 	grid-column: span 3 / span 3;
+}
+.col-span-2 {
+	grid-column: span 2 / span 2;
 }
 .col-span-4 {
 	grid-column: span 4 / span 4;
@@ -2003,11 +2003,11 @@ small {
 .ml-auto {
 	margin-left: auto;
 }
-.ml-3 {
-	margin-left: 0.75rem;
-}
 .mr-2 {
 	margin-right: 0.5rem;
+}
+.ml-3 {
+	margin-left: 0.75rem;
 }
 .mb-10 {
 	margin-bottom: 2.5rem;
@@ -2171,6 +2171,9 @@ small {
 .h-4 {
 	height: 1rem;
 }
+.h-\[30vh\] {
+	height: 30vh;
+}
 .h-\[50vh\] {
 	height: 50vh;
 }
@@ -2197,9 +2200,6 @@ small {
 }
 .h-\[85vh\] {
 	height: 85vh;
-}
-.h-\[30vh\] {
-	height: 30vh;
 }
 .h-80 {
 	height: 20rem;
@@ -2233,6 +2233,12 @@ small {
 }
 .h-\[70\%\] {
 	height: 70%;
+}
+.h-\[45vh\] {
+	height: 45vh;
+}
+.h-6 {
+	height: 1.5rem;
 }
 .max-h-\[50vh\] {
 	max-height: 50vh;
@@ -2377,6 +2383,9 @@ small {
 .max-w-\[90vw\] {
 	max-width: 90vw;
 }
+.max-w-xl {
+	max-width: 36rem;
+}
 .flex-1 {
 	flex: 1 1 0%;
 }
@@ -2448,6 +2457,9 @@ small {
 }
 .grid-cols-1 {
 	grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-3 {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .grid-cols-4 {
 	grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2751,6 +2763,9 @@ small {
 .border-r-2 {
 	border-right-width: 2px;
 }
+.border-r {
+	border-right-width: 1px;
+}
 .border-solid {
 	border-style: solid;
 }
@@ -2939,6 +2954,10 @@ small {
 .p-10 {
 	padding: 2.5rem;
 }
+.py-7 {
+	padding-top: 1.75rem;
+	padding-bottom: 1.75rem;
+}
 .py-6 {
 	padding-top: 1.5rem;
 	padding-bottom: 1.5rem;
@@ -3039,10 +3058,6 @@ small {
 	padding-top: 3rem;
 	padding-bottom: 3rem;
 }
-.py-7 {
-	padding-top: 1.75rem;
-	padding-bottom: 1.75rem;
-}
 .pt-12 {
 	padding-top: 3rem;
 }
@@ -3093,6 +3108,12 @@ small {
 }
 .pb-9 {
 	padding-bottom: 2.25rem;
+}
+.pt-20 {
+	padding-top: 5rem;
+}
+.pt-4 {
+	padding-top: 1rem;
 }
 .text-left {
 	text-align: left;
@@ -3215,6 +3236,10 @@ small {
 .tracking-widest {
 	letter-spacing: 0.1em;
 }
+.text-black {
+	--tw-text-opacity: 1;
+	color: rgba(0, 0, 0, var(--tw-text-opacity));
+}
 .text-gray-400 {
 	--tw-text-opacity: 1;
 	color: rgba(168, 162, 158, var(--tw-text-opacity));
@@ -3234,10 +3259,6 @@ small {
 .text-blue-500 {
 	--tw-text-opacity: 1;
 	color: rgba(59, 130, 246, var(--tw-text-opacity));
-}
-.text-black {
-	--tw-text-opacity: 1;
-	color: rgba(0, 0, 0, var(--tw-text-opacity));
 }
 .text-primary {
 	--tw-text-opacity: 1;
@@ -3900,6 +3921,9 @@ small {
 	.md\:h-96 {
 		height: 24rem;
 	}
+	.md\:h-\[45vh\] {
+		height: 45vh;
+	}
 	.md\:max-h-\[80vh\] {
 		max-height: 80vh;
 	}
@@ -4173,6 +4197,9 @@ small {
 	.lg\:px-10 {
 		padding-left: 2.5rem;
 		padding-right: 2.5rem;
+	}
+	.lg\:pt-12 {
+		padding-top: 3rem;
 	}
 	.lg\:text-center {
 		text-align: center;
