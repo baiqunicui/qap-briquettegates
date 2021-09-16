@@ -20,7 +20,7 @@
         </div>
     </x-orga.section>
 
-    <x-orga.section class="pb-12">
+    <x-orga.section class="py-7">
         <div class="flex items-center justify-between w-full">
             @foreach ($item->meta ?? [] as $meta)
             <ul class="hidden lg:flex">

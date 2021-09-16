@@ -3161,6 +3161,10 @@ select {
 	padding-top: 3rem;
 	padding-bottom: 3rem;
 }
+.py-7 {
+	padding-top: 1.75rem;
+	padding-bottom: 1.75rem;
+}
 .pb-4 {
 	padding-bottom: 1rem;
 }
