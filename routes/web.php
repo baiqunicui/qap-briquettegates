@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',             App\Http\Livewire\Home\FeIndex::class)->name('home');
 Route::get('/about',        App\Http\Livewire\About\FeIndex::class)->name('about.index');
-Route::get('/products',     App\Http\Livewire\Product\FeIndex::class)->name('products.index');
+Route::get('/ourteam',      App\Http\Livewire\Product\FeIndex::class)->name('products.index');
 Route::get('/products/{item:slug}',   App\Http\Livewire\ProductList\FeIndex::class)->name('products.show');
 Route::get('/contact',      App\Http\Livewire\Contact\FeIndex::class)->name('contact.index');
 
