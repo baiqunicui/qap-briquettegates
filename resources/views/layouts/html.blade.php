@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/fecss/app.css?n=3">
+    <link rel="stylesheet" href="/fecss/app.css?n=4">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <script src="{{ asset('/fejs/app.js?n=3') }}" defer></script>
+    <script src="{{ asset('/fejs/app.js?n=4') }}" defer></script>
     {{-- <script src="{{ asset('/fejs/alpine-clipboard.js') }}" defer></script> --}}
     @livewireScripts
     <script src="{{ asset('/fejs/aos.js') }}"></script>

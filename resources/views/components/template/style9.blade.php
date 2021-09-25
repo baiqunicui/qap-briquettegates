@@ -11,7 +11,9 @@
         </x-mole.text-4>
     </x-orga.section>
 
-    <x-orga.section class="pb-12">
+    <x-orga.section class="flex-col pb-12 space-y-4 md:space-y-6">
+        <h6 class="text-gray-400">{!! $item->desc[0][lang()] ?? '' !!}</h6>
+
         <div class="flex flex-wrap">
             @foreach ($item->meta ?? [] as $key => $meta)
             <a href="{{ $meta[lang()][0]['link'] ?? '' }}" target="_blank">

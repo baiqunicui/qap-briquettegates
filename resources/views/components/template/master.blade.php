@@ -26,6 +26,8 @@
     @include('components.template.style12')
     @elseif ($item->style_id === 13)
     @include('components.template.style13')
+    @elseif ($item->style_id === 14)
+    @include('components.template.style14')
     @endif
     @endforeach
 </div>

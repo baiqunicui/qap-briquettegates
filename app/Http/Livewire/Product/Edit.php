@@ -52,6 +52,7 @@ class Edit extends FormComponent
                 Select::make('foto', 'foto')->options(Upload::pluck('title', 'id')->toArray()),
                 Input::make('nama', 'nama'),
                 Input::make('jabatan', 'jabatan'),
+                Input::make('desc', 'desc'),
                 Input::make('linkedin', 'linkedin'),
                 Input::make('instagram', 'instagram'),
             ]),

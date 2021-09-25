@@ -23,7 +23,7 @@
     }
 
     h2 {
-        font-size: calc(40px + (64 - 40) * ((100vw - 300px) / (1600 - 300)));
+        font-size: calc(32px + (56 - 32) * ((100vw - 300px) / (1600 - 300)));
         @apply font-bold leading-none tracking-tighter text-gray-800 sm:tracking-tight;
     }
 
@@ -51,7 +51,7 @@
     }
 
     p {
-        font-size: calc(14px + (17 - 14) * ((100vw - 300px) / (1600 - 300)));
+        font-size: calc(13px + (17 - 13) * ((100vw - 300px) / (1600 - 300)));
         @apply font-normal leading-relaxed text-gray-600;
     }
 
